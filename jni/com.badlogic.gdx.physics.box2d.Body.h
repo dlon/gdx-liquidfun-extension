@@ -25,14 +25,6 @@ JNIEXPORT jlong JNICALL Java_com_badlogic_gdx_physics_box2d_Body_jniCreateFixtur
 
 /*
  * Class:     com_badlogic_gdx_physics_box2d_Body
- * Method:    jniDestroyFixture
- * Signature: (JJ)V
- */
-JNIEXPORT void JNICALL Java_com_badlogic_gdx_physics_box2d_Body_jniDestroyFixture
-  (JNIEnv *, jobject, jlong, jlong);
-
-/*
- * Class:     com_badlogic_gdx_physics_box2d_Body
  * Method:    jniSetTransform
  * Signature: (JFFF)V
  */
@@ -382,14 +374,6 @@ JNIEXPORT jfloat JNICALL Java_com_badlogic_gdx_physics_box2d_Body_jniGetGravityS
  */
 JNIEXPORT void JNICALL Java_com_badlogic_gdx_physics_box2d_Body_jniSetGravityScale
   (JNIEnv *, jobject, jlong, jfloat);
-
-/*
- * Class:     com_badlogic_gdx_physics_box2d_Body
- * Method:    jniSetUseParticleBodyContactListener
- * Signature: (JZ)V
- */
-JNIEXPORT void JNICALL Java_com_badlogic_gdx_physics_box2d_Body_jniSetUseParticleBodyContactListener
-  (JNIEnv *, jobject, jlong, jboolean);
 
 #ifdef __cplusplus
 }
