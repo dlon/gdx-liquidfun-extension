@@ -4,8 +4,8 @@
     <parent>
         <groupId>com.badlogicgames.gdx</groupId>
         <artifactId>gdx-parent</artifactId>
-        <version>1.1.1-SNAPSHOT</version>
-        <relativePath>../../../../../</relativePath>
+        <version>1.9.9-SNAPSHOT</version>
+        <relativePath>../../../../libgdx/pom.xml</relativePath>
     </parent>
     
     <artifactId>gdx-box2d-platform</artifactId>
@@ -15,12 +15,22 @@
     <properties>
         <base.url>http://libgdx.badlogicgames.com/nightlies/dist/extensions/gdx-box2d</base.url>
     </properties>
-    
+
     <dependencies>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx</artifactId>
+            <version>1.9.9-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-jnigen</artifactId>
+            <version>1.9.9-SNAPSHOT</version>
+        </dependency>
     </dependencies>
-    
+
     <build>
-        <sourceDirectory>src</sourceDirectory>
+        <sourceDirectory>../../src</sourceDirectory>
         
         <plugins>
             <!-- first download an unpack the native libraries -->

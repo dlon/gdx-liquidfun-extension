@@ -1,3 +1,2 @@
-APP_ABI := armeabi armeabi-v7a x86
-APP_PLATFORM := android-10
-APP_STL := stlport_static
+APP_ABI := armeabi armeabi-v7a x86 x86_64 arm64-v8a
+APP_PLATFORM := android-9
