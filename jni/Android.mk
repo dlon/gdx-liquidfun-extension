@@ -66,6 +66,7 @@ LOCAL_SRC_FILES := Box2D/Collision/b2BroadPhase.cpp\
 	com.badlogic.gdx.physics.box2d.Body.cpp\
 	com.badlogic.gdx.physics.box2d.ChainShape.cpp\
 	com.badlogic.gdx.physics.box2d.CircleShape.cpp\
+	com.badlogic.gdx.physics.box2d.Collision.cpp\
 	com.badlogic.gdx.physics.box2d.Contact.cpp\
 	com.badlogic.gdx.physics.box2d.ContactImpulse.cpp\
 	com.badlogic.gdx.physics.box2d.EdgeShape.cpp\

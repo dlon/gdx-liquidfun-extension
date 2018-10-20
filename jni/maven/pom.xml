@@ -30,10 +30,12 @@
     </dependencies>
 
     <build>
+        <finalName>gdx-liquidfun</finalName>
         <sourceDirectory>../../src</sourceDirectory>
-        
+
         <plugins>
-            <!-- first download an unpack the native libraries -->
+            <!--
+            <!- - first download an unpack the native libraries - ->
             <plugin>
                 <groupId>com.googlecode.maven-download-plugin</groupId>
                 <artifactId>maven-download-plugin</artifactId>
@@ -96,7 +98,8 @@
                     </execution>
                 </executions>
             </plugin>
-            
+            -->
+
             <!-- if we have pre-built versions, replace the downloaded versions with those -->
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -184,12 +187,17 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.4</version>
                 <configuration>
+                    <finalName>gdx-liquidfun</finalName>
                     <descriptors>
                         <descriptor>desktop.xml</descriptor>                        
                         <descriptor>x86.xml</descriptor>
                         <descriptor>armeabi.xml</descriptor>
                         <descriptor>armeabi-v7a.xml</descriptor>
                         <descriptor>ios.xml</descriptor>
+                        <!--<descriptor>x86_64.xml</descriptor>
+                        <descriptor>mips64.xml</descriptor>
+                        <descriptor>mips.xml</descriptor>
+                        <descriptor>arm64-v8a.xml</descriptor>-->
                     </descriptors>
                 </configuration>
                 <executions>

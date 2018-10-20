@@ -55,11 +55,15 @@
 					<!-- Include both b/c Windows might be either -->
 					<available file="${g++}" filepath="${env.PATH}"/>
 					<available file="${g++}" filepath="${env.Path}"/>
+					<available file="${g++}.exe" filepath="${env.PATH}"/>
+					<available file="${g++}.exe" filepath="${env.Path}"/>
 				</or>
 				<or>
 					<!-- Include both b/c Windows might be either -->
 					<available file="${gcc}" filepath="${env.PATH}"/>
 					<available file="${gcc}" filepath="${env.Path}"/>
+					<available file="${gcc}.exe" filepath="${env.PATH}"/>
+					<available file="${gcc}.exe" filepath="${env.Path}"/>
 				</or>
 			</and>
 		</condition>
