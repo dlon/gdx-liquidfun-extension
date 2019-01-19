@@ -63,6 +63,8 @@ public final class World implements Disposable {
 
 static jclass worldClass = 0;
 static jmethodID shouldCollideID = 0;
+static jmethodID shouldFixtureParticleCollideID = 0;
+static jmethodID shouldParticleParticleCollideID = 0;
 static jmethodID beginContactID = 0;
 static jmethodID endContactID = 0;
 static jmethodID beginParticleBodyContactID = 0;
@@ -128,6 +130,22 @@ public:
 	{
 		if( shouldCollideID != 0 )
 			return env->CallBooleanMethod( obj, shouldCollideID, (jlong)fixtureA, (jlong)fixtureB );
+		else
+			return true;
+	}
+
+	virtual bool ShouldCollide(b2Fixture* fixture, b2ParticleSystem* particleSystem, int32 particle)
+	{
+		if( shouldFixtureParticleCollideID != 0 )
+			return env->CallBooleanMethod( obj, shouldFixtureParticleCollideID, (jlong)fixture, (jlong)particleSystem, (jint)particle );
+		else
+			return true;
+	}
+
+	virtual bool ShouldCollide(b2ParticleSystem* particleSystem, int32 particleA, int32 particleB)
+	{
+		if( shouldParticleParticleCollideID != 0 )
+			return env->CallBooleanMethod( obj, shouldParticleParticleCollideID, (jlong)particleSystem, (jint)particleA, (jint)particleB );
 		else
 			return true;
 	}
@@ -344,6 +362,8 @@ b2ContactFilter defaultFilter;
 			reportRayParticleID = env->GetMethodID(worldClass, "reportRayParticle", "(JIFFFFF)F" );
 			rayShouldQueryParticleSystemID = env->GetMethodID( worldClass, "rayShouldQueryParticleSystem", "(J)Z");
 			shouldCollideID = env->GetMethodID( worldClass, "contactFilter", "(JJ)Z");
+			shouldFixtureParticleCollideID = env->GetMethodID( worldClass, "contactFilterFixtureParticle", "(JJI)Z");
+			shouldParticleParticleCollideID = env->GetMethodID( worldClass, "contactFilterParticleParticle", "(JII)Z");
 			particleBodyContactListenerBeginContactID = env->GetMethodID(worldClass, "beginParticleContact", "(JI)V" );
 		}
 	
@@ -1084,6 +1104,32 @@ b2ContactFilter defaultFilter;
 	private final ParticleContact particleContact = new ParticleContact(this, 0);
 	private final Manifold manifold = new Manifold(0);
 	private final ContactImpulse impulse = new ContactImpulse(this, 0);
+
+	/** Internal method called from JNI in case a contact happens
+	 * @param fixtureAddr
+	 * @param particleSystemAddr
+	 * @param particle
+	 * @return whether the things should collide */
+	private boolean contactFilterFixtureParticle (long fixtureAddr, long particleSystemAddr, int particle) {
+		return contactFilter == null || contactFilter.shouldCollide(
+			fixtures.get(fixtureAddr),
+			particleSystems.get(particleSystemAddr),
+			particle
+		);
+	}
+
+	/** Internal method called from JNI in case a contact happens
+	 * @param particleSystemAddr
+	 * @param particleA
+	 * @param particleB
+	 * @return whether the things should collide */
+	private boolean contactFilterParticleParticle (long particleSystemAddr, int particleA, int particleB) {
+		return contactFilter == null || contactFilter.shouldCollide(
+			particleSystems.get(particleSystemAddr),
+			particleA,
+			particleB
+		);
+	}
 
 	private void beginContact (long contactAddr) {
 		contact.addr = contactAddr;

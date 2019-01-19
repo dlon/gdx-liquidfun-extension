@@ -16,9 +16,23 @@
 
 package com.badlogic.gdx.physics.box2d;
 
+import finnstr.libgdx.liquidfun.ParticleSystem;
+
 /** Implement this class to provide collision filtering. In other words, you can implement this class if you want finer control
  * over contact creation.
  * @author mzechner */
 public interface ContactFilter {
 	boolean shouldCollide (Fixture fixtureA, Fixture fixtureB);
+
+	/** Return true if contact calculations should be performed between a
+	 * fixture and particle.  This is only called if the
+	 * b2_fixtureContactListenerParticle flag is set on the particle.
+	 */
+	boolean shouldCollide (Fixture fixture, ParticleSystem particleSystem, int particleIndex);
+
+	/** Return true if contact calculations should be performed between two
+	 * particles.  This is only called if the b2_particleContactListenerParticle
+	 * flag is set on the particle.
+	 */
+	boolean shouldCollide (ParticleSystem particleSystem, int particleA, int particleB);
 }
