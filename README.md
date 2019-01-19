@@ -1,6 +1,12 @@
 <img src="liquidfun-extension-logo.png"
 alt="gdx-liquidfun-extension logo" style="float:right;" />
 
+Fork updates (2018)
+===================
+
+This fork adds patches from LiquidFun, one-shot collision tests (see the `Collision` class),
+and filtering of particle-particle and fixture-particle collisions (see `ContactFilter`).
+
 gdx-liquidfun-extension
 =======================
 
