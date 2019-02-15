@@ -371,7 +371,7 @@ public class ParticleSystem {
 	
 	/** Reloads the velocitybuffer from native code and returns it */
 	public Array<Vector2> getParticleVelocityBuffer() {
-		updateParticleVelocitiyBuffer();
+		updateParticleVelocityBuffer();
 		return mVelocities;
 	}
 	
@@ -480,45 +480,80 @@ public class ParticleSystem {
 	
 	/** Reloads the position buffer from native code */
 	public void updateParticlePositionBuffer() {
-		mPositions.ensureCapacity(getParticleCount());
-		for (Vector2 pos : mPositions)
-			freeVectors.free(pos);
-		mPositions.clear();
+		int count = getParticleCount();
+		int oldCount = mPositions.size;
 		
 		float[] x = jniGetParticlePositionBufferX(addr);
 		float[] y = jniGetParticlePositionBufferY(addr);
-		
-		for (int i = 0, len = getParticleCount(); i < len; i++) {
+
+		if (oldCount > count) {
+			for (int i=count; i < oldCount; i++) {
+				freeVectors.free(mPositions.get(i));
+			}
+			mPositions.truncate(count);
+			oldCount = count;
+		} else {
+			mPositions.ensureCapacity(count);
+		}
+
+		int i = 0;
+		for (; i < oldCount; i++) {
+			mPositions.get(i).set(x[i], y[i]);
+		}
+		for (; i < count; i++) {
 			mPositions.add(freeVectors.obtain().set(x[i], y[i]));
 		}
 	}
 	
 	/** Reloads the velocitybuffer from native code */
-	public void updateParticleVelocitiyBuffer() {
-		mVelocities.ensureCapacity(getParticleCount());
-		for (Vector2 vel : mVelocities)
-			freeVectors.free(vel);
-		mVelocities.clear();
+	public void updateParticleVelocityBuffer() {
+		int count = getParticleCount();
+		int oldCount = mVelocities.size;
 		
 		float[] x = jniGetParticleVelocityBufferX(addr);
 		float[] y = jniGetParticleVelocityBufferY(addr);
-		
-		for(int i = 0, len = getParticleCount(); i < len; i++) {
+
+		if (oldCount > count) {
+			for (int i=count; i < oldCount; i++) {
+				freeVectors.free(mVelocities.get(i));
+			}
+			mVelocities.truncate(count);
+			oldCount = count;
+		} else {
+			mVelocities.ensureCapacity(count);
+		}
+
+		int i = 0;
+		for (; i < oldCount; i++) {
+			mVelocities.get(i).set(x[i], y[i]);
+		}
+		for (; i < count; i++) {
 			mVelocities.add(freeVectors.obtain().set(x[i], y[i]));
 		}
 	}
 	
 	/** Reloads the colorbuffer from native code */
 	public void updateParticleColorBuffer() {
-		mColors.ensureCapacity(getParticleCount());
-		mColors.clear();
-		
+		int count = getParticleCount();
+		int oldCount = mColors.size;
+
 		int[] r = jniGetParticleColorBufferR(addr);
 		int[] g = jniGetParticleColorBufferG(addr);
 		int[] b = jniGetParticleColorBufferB(addr);
 		int[] a = jniGetParticleColorBufferA(addr);
-		
-		for(int i = 0, len = getParticleCount(); i < len; i++) {
+
+		if (oldCount > count) {
+			mColors.truncate(count);
+			oldCount = count;
+		} else {
+			mColors.ensureCapacity(count);
+		}
+
+		int i = 0;
+		for (; i < oldCount; i++) {
+			mColors.get(i).set(r[i] / 255f, g[i] / 255f, b[i] / 255f, a[i] / 255f);
+		}
+		for (; i < count; i++) {
 			mColors.add(new Color(r[i] / 255f, g[i] / 255f, b[i] / 255f, a[i] / 255f));
 		}
 	}
@@ -526,7 +561,7 @@ public class ParticleSystem {
 	/** Reloads all buffers from native code */
 	public void updateAllParticleBuffers() {
 		updateParticlePositionBuffer();
-		updateParticleVelocitiyBuffer();
+		updateParticleVelocityBuffer();
 		updateParticleColorBuffer();
 	}
 	
