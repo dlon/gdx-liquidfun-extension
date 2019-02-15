@@ -34,7 +34,7 @@ public class Body {
 	protected long addr;
 
 	/** temporary float array **/
-	private final float[] tmp = new float[4];
+	private static final float[] tmp = new float[4];
 
 	/** World **/
 	private final World world;

@@ -24,6 +24,12 @@ public class ParticleSystem {
 			return new ParticleGroup(0);
 		}
 	};
+
+	final Pool<Vector2> freeVectors = new Pool<Vector2>() {
+		@Override protected Vector2 newObject() {
+			return new Vector2();
+		}
+	};
 	
 	private final long addr;
 	private final World world;
@@ -472,29 +478,33 @@ public class ParticleSystem {
 		return array;
 	*/
 	
-	/** Reloads the positionbuffer from native code */
+	/** Reloads the position buffer from native code */
 	public void updateParticlePositionBuffer() {
 		mPositions.ensureCapacity(getParticleCount());
+		for (Vector2 pos : mPositions)
+			freeVectors.free(pos);
 		mPositions.clear();
 		
 		float[] x = jniGetParticlePositionBufferX(addr);
 		float[] y = jniGetParticlePositionBufferY(addr);
 		
-		for(int i = 0; i < getParticleCount(); i++) {
-			mPositions.add(new Vector2(x[i], y[i]));
+		for (int i = 0, len = getParticleCount(); i < len; i++) {
+			mPositions.add(freeVectors.obtain().set(x[i], y[i]));
 		}
 	}
 	
 	/** Reloads the velocitybuffer from native code */
 	public void updateParticleVelocitiyBuffer() {
 		mVelocities.ensureCapacity(getParticleCount());
+		for (Vector2 vel : mVelocities)
+			freeVectors.free(vel);
 		mVelocities.clear();
 		
 		float[] x = jniGetParticleVelocityBufferX(addr);
 		float[] y = jniGetParticleVelocityBufferY(addr);
 		
-		for(int i = 0; i < getParticleCount(); i++) {
-			mVelocities.add(new Vector2(x[i], y[i]));
+		for(int i = 0, len = getParticleCount(); i < len; i++) {
+			mVelocities.add(freeVectors.obtain().set(x[i], y[i]));
 		}
 	}
 	
@@ -508,7 +518,7 @@ public class ParticleSystem {
 		int[] b = jniGetParticleColorBufferB(addr);
 		int[] a = jniGetParticleColorBufferA(addr);
 		
-		for(int i = 0; i < getParticleCount(); i++) {
+		for(int i = 0, len = getParticleCount(); i < len; i++) {
 			mColors.add(new Color(r[i] / 255f, g[i] / 255f, b[i] / 255f, a[i] / 255f));
 		}
 	}

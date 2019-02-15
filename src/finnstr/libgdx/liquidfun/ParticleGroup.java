@@ -14,7 +14,11 @@ public class ParticleGroup {
 	protected long addr;
 	
 	private Object userData;
-	
+
+	private static Vector2 centerPos = new Vector2();
+	private static Vector2 pos = new Vector2();
+	private static Vector2 linearVel = new Vector2();
+
 	protected ParticleGroup(long addr) {
 		this.addr = addr;
 	}
@@ -28,7 +32,7 @@ public class ParticleGroup {
 		group->DestroyParticles();
 	*/
 	
-	public void setUsetData(Object pObject) {
+	public void setUserData(Object pObject) {
 		userData = pObject;
 	}
 	
@@ -91,7 +95,7 @@ public class ParticleGroup {
 	*/
 	
 	public Vector2 getCenter() {
-		return new Vector2(jniGetCenterX(addr), jniGetCenterY(addr));
+		return centerPos.set(jniGetCenterX(addr), jniGetCenterY(addr));
 	}
 	
 	private native float jniGetCenterX(long addr); /*
@@ -104,7 +108,7 @@ public class ParticleGroup {
 	*/
 	
 	public Vector2 getLinearVelocity() {
-		return new Vector2(jniGetLinVelocityX(addr), jniGetLinVelocityY(addr));
+		return linearVel.set(jniGetLinVelocityX(addr), jniGetLinVelocityY(addr));
 	}
 	
 	private native float jniGetLinVelocityX(long addr); /*
@@ -126,7 +130,7 @@ public class ParticleGroup {
 	*/
 	
 	public Vector2 getPosition() {
-		return new Vector2(jniGetPositionX(addr), jniGetPositionY(addr));
+		return pos.set(jniGetPositionX(addr), jniGetPositionY(addr));
 	}
 	
 	public native float jniGetPositionX(long addr); /*
